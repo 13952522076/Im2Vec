@@ -51,5 +51,7 @@ experiment.load_state_dict(checkpoint['state_dict'])
 _ = experiment.train_dataloader()
 experiment.eval()
 experiment.freeze()
-experiment.sample_interpolate(save_dir=config['logging_params']['save_dir'], name=config['logging_params']['name'],
-                              version=config['logging_params']['version'], save_svg=True, other_interpolations=config['logging_params']['other_interpolations'])
+# experiment.sample_interpolate(save_dir=config['logging_params']['save_dir'], name=config['logging_params']['name'],
+#                               version=config['logging_params']['version'], save_svg=True, other_interpolations=config['logging_params']['other_interpolations'])
+
+experiment.sample_images()
