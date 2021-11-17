@@ -244,14 +244,14 @@ class VAEXperiment(pl.LightningModule):
                           f"{name}_recons.png",
                           normalize=False,
                           width=0,
-                          colors=[0,0,0],
+                          colors=[1,1,1],
                           nrow=1)
         vutils.save_image(test_input.cpu().data,
                           f"{save_dir}{name}/version_{version}/"
                           f"{name}_input.png",
                           normalize=False,
                           width=0,
-                          colors=[0,0,0],
+                          colors=[1,1,1],
                           nrow=1)
         # if save_svg:
         #     self.model.save(test_input, save_dir, name)
