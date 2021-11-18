@@ -143,12 +143,12 @@ class VAEXperiment(pl.LightningModule):
         test_input, test_label = next(iter(self.sample_dataloader))
         test_input = test_input.to(self.curr_device)
         recons = self.model.generate(test_input, labels = test_label)
-        vutils.save_image(recons.data,
+        vutils.save_image(recons.cpu().data,
                           f"{save_dir}{name}/version_{version}/recons.png",
                           normalize=False,
                           nrow=12)
 
-        vutils.save_image(test_input.data,
+        vutils.save_image(test_input.cpu().data,
                           f"{save_dir}{name}/version_{version}/input.png",
                           normalize=False,
                           nrow=12)
@@ -172,69 +172,69 @@ class VAEXperiment(pl.LightningModule):
     def sample_interpolate(self, save_dir, name, version, save_svg=False, other_interpolations=False):
         test_input, test_label = next(iter(self.sample_dataloader))
         test_input = test_input.to(self.curr_device)
-        interpolate_samples = self.model.interpolate(test_input, verbose=False)
-        interpolate_samples = torch.cat(interpolate_samples, dim=0)
-        vutils.save_image(interpolate_samples.cpu().data,
-                          f"{save_dir}{name}/version_{version}/"
-                          f"{name}_interpolate_img.png",
-                          normalize=False,
-                          nrow=10)
-
-        if other_interpolations:
-            interpolate_samples = self.model.interpolate2D(test_input, verbose=False)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_interpolate2D_image.png",
-                              normalize=False,
-                              nrow=10)
-            interpolate_samples = self.model.interpolate2D(test_input, verbose=True)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_interpolate2D_vector.png",
-                              normalize=False,
-                              nrow=10)
-            interpolate_samples = self.model.visualize_sampling(test_input, verbose=False)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_visualize_sampling_image.png",
-                              normalize=False,
-                              nrow=self.params['val_batch_size'])
-            interpolate_samples = self.model.visualize_sampling(test_input, verbose=True)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_visualize_sampling_vector.png",
-                              normalize=False,
-                              nrow=self.params['val_batch_size'])
-            interpolate_samples = self.model.naive_vector_interpolate(test_input, verbose=False)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_naive_interpolate_image.png",
-                              normalize=False,
-                              nrow=10)
-            interpolate_samples = self.model.naive_vector_interpolate(test_input, verbose=True)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_naive_interpolate_vector.png",
-                              normalize=False,
-                              nrow=10)
-            interpolate_samples = self.model.interpolate(test_input, verbose=True)
-            interpolate_samples = torch.cat(interpolate_samples, dim=0)
-            vutils.save_image(interpolate_samples.cpu().data,
-                              f"{save_dir}{name}/version_{version}/"
-                              f"{name}_interpolate_vector.png",
-                              normalize=False,
-                              nrow=10)
-            sampling_graph = self.model.sampling_error(test_input)
-            plt.imsave(f"{save_dir}{name}/version_{version}/{name}_recons_graph.png", sampling_graph)
-            if self.model.only_auxillary_training:
-                graph = self.model.visualize_aux_error(test_input, verbose=True)
-                plt.imsave(f"{save_dir}{name}/version_{version}/{name}_aux_graph.png", graph)
+        # interpolate_samples = self.model.interpolate(test_input, verbose=False)
+        # interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        # vutils.save_image(interpolate_samples.cpu().data,
+        #                   f"{save_dir}{name}/version_{version}/"
+        #                   f"{name}_interpolate_img.png",
+        #                   normalize=False,
+        #                   nrow=10)
+        #
+        # if other_interpolations:
+        #     interpolate_samples = self.model.interpolate2D(test_input, verbose=False)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_interpolate2D_image.png",
+        #                       normalize=False,
+        #                       nrow=10)
+        #     interpolate_samples = self.model.interpolate2D(test_input, verbose=True)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_interpolate2D_vector.png",
+        #                       normalize=False,
+        #                       nrow=10)
+        #     interpolate_samples = self.model.visualize_sampling(test_input, verbose=False)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_visualize_sampling_image.png",
+        #                       normalize=False,
+        #                       nrow=self.params['val_batch_size'])
+        #     interpolate_samples = self.model.visualize_sampling(test_input, verbose=True)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_visualize_sampling_vector.png",
+        #                       normalize=False,
+        #                       nrow=self.params['val_batch_size'])
+        #     interpolate_samples = self.model.naive_vector_interpolate(test_input, verbose=False)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_naive_interpolate_image.png",
+        #                       normalize=False,
+        #                       nrow=10)
+        #     interpolate_samples = self.model.naive_vector_interpolate(test_input, verbose=True)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_naive_interpolate_vector.png",
+        #                       normalize=False,
+        #                       nrow=10)
+        #     interpolate_samples = self.model.interpolate(test_input, verbose=True)
+        #     interpolate_samples = torch.cat(interpolate_samples, dim=0)
+        #     vutils.save_image(interpolate_samples.cpu().data,
+        #                       f"{save_dir}{name}/version_{version}/"
+        #                       f"{name}_interpolate_vector.png",
+        #                       normalize=False,
+        #                       nrow=10)
+        #     sampling_graph = self.model.sampling_error(test_input)
+        #     plt.imsave(f"{save_dir}{name}/version_{version}/{name}_recons_graph.png", sampling_graph)
+        #     if self.model.only_auxillary_training:
+        #         graph = self.model.visualize_aux_error(test_input, verbose=True)
+        #         plt.imsave(f"{save_dir}{name}/version_{version}/{name}_aux_graph.png", graph)
 
         recons = self.model.generate(test_input, labels = test_label)
         vutils.save_image(recons.cpu().data,
